@@ -1,9 +1,12 @@
 const express = require('express');
-const ytdl = require('ytdl-core');  // or @distube/ytdl-core if you switched
+const ytdl = require('ytdl-core');  // keep this for now
 const cors = require('cors');
 const path = require('path');
 
+process.env.YTDL_NO_UPDATE = '1';  // <-- Add this to kill the update check
+
 const app = express();
+// rest of your code...
 const port = process.env.PORT || 3000;
 
 app.use(cors());
