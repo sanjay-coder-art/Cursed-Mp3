@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cursed Converter: YouTube to MP3</title>
+    <style>
+        body {
+            background-color: #121212;
+            color: #f0f0f0;
+            font-family: 'Georgia', serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            overflow: hidden;
+        }
+
+        .container {
+            background: linear-gradient(to bottom, #1e1e1e, #0a0a0a);
+            padding: 40px;
+            border-radius: 15px;
+            box-shadow: 0 0 20px rgba(255, 0, 0, 0.3);
+            text-align: center;
+            max-width: 500px;
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0% {
+                box-shadow: 0 0 20px rgba(255, 0, 0, 0.3);
+            }
+
+            50% {
+                box-shadow: 0 0 30px rgba(255, 0, 0, 0.5);
+            }
+
+            100% {
+                box-shadow: 0 0 20px rgba(255, 0, 0, 0.3);
+            }
+        }
+
+        h1 {
+            color: #ff0000;
+            font-size: 2.5em;
+            margin-bottom: 20px;
+            text-shadow: 2px 2px 4px #000;
+        }
+
+        input[type="text"] {
+            width: 100%;
+            padding: 15px;
+            margin-bottom: 20px;
+            border: 2px solid #ff0000;
+            background: #333;
+            color: #f0f0f0;
+            border-radius: 10px;
+            font-size: 1.1em;
+        }
+
+        button {
+            background: #ff0000;
+            color: #fff;
+            border: none;
+            padding: 15px 30px;
+            font-size: 1.2em;
+            cursor: pointer;
+            border-radius: 10px;
+            transition: background 0.3s;
+        }
+
+        button:hover {
+            background: #cc0000;
+        }
+
+        #status {
+            margin-top: 20px;
+            font-style: italic;
+            color: #999;
+        }
+
+        a#downloadLink {
+            display: none;
+            margin-top: 20px;
+            color: #ff0000;
+            text-decoration: none;
+            font-weight: bold;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <h1>Cursed Converter</h1>
+        <p>Enter the YouTube URL to summon its MP3 essence...</p>
+        <input type="text" id="youtubeUrl" placeholder="https://www.youtube.com/watch?v=...">
+        <button onclick="convertToMp3()">Invoke the Curse</button>
+        <div id="status"></div>
+        <a id="downloadLink" download>Download the Cursed MP3</a>
+    </div>
+
+    <script>
+        async function convertToMp3() {
+            const url = document.getElementById('youtubeUrl').value;
+            const status = document.getElementById('status');
+            const downloadLink = document.getElementById('downloadLink');
+
+            if (!url) {
+                status.textContent = 'The void demands a URL...';
+                return;
+            }
+
+            status.textContent = 'Weaving the curse...';
+            downloadLink.style.display = 'none';
+
+            try {
+                const response = await fetch('/convert', {  // Replace with your backend URL
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ url })
+                });
+
+                if (!response.ok) throw new Error('The spirits rebel...');
+
+                const blob = await response.blob();
+                const blobUrl = URL.createObjectURL(blob);
+                downloadLink.href = blobUrl;
+                downloadLink.download = 'cursed_music.mp3';
+                downloadLink.style.display = 'block';
+                downloadLink.textContent = 'Claim Your Cursed MP3';
+                status.textContent = 'The essence is yours...';
+            } catch (error) {
+                status.textContent = `Curse failed: ${error.message}`;
+            }
+        }
+    </script>
+</body>
+
+</html>
